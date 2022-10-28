@@ -1,20 +1,32 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import { NavigationContainer } from "@react-navigation/native";
+
+import GetStarted from "./screens/GetStarted";
+import EnrollFirstApp from "./screens/EnrollFirstApp";
+import QrCodeReader from "./screens/QrCodeReader";
+import AppsEnrolledList from "./screens/AppsEnrolledList";
+
+const MyStack = createStackNavigator();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    return (
+        <NavigationContainer>
+            <MyStack.Navigator
+                screenOptions={{ headerShown: false }}
+                initialRouteName="GetStarted"
+            >
+                <MyStack.Screen name="GetStarted" component={GetStarted} />
+                <MyStack.Screen
+                    name="EnrollFirstApp"
+                    component={EnrollFirstApp}
+                />
+                <MyStack.Screen name="QrCodeReader" component={QrCodeReader} />
+                <MyStack.Screen
+                    name="AppsEnrolledList"
+                    component={AppsEnrolledList}
+                />
+            </MyStack.Navigator>
+        </NavigationContainer>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

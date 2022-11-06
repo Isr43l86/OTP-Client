@@ -9,9 +9,6 @@ const nextPage = "AppsEnrolledList";
 export default function QrCodeReader({ navigation }) {
     return (
         <View style={styles.container}>
-            <Text style={styles.description}>
-                Scann the QR code showed in your web app
-            </Text>
             <View style={styles.scannerContainer}>
                 <QrCodeCam navigation={navigation} navigateTo={nextPage} />
             </View>
@@ -21,20 +18,21 @@ export default function QrCodeReader({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingTop: height * 0.13,
-        backgroundColor: "rgb(231, 231, 231)",
-        alignItems: "center",
-    },
-    description: {
-        fontSize: height * 0.027,
-        fontWeight: "500",
+        marginHorizontal: 0,
+        marginLeft: 0,
+        marginStart: 0,
+        paddingHorizontal: 0,
+        paddingLeft: 0,
+        paddingStart: 0,
+        padding: 0,
     },
     scannerContainer: {
-        marginTop: height * 0.1,
-        height: height * 0.5,
-        width: width * 0.751,
-        borderRadius: 20,
-        overflow: "hidden",
+        marginHorizontal: 0,
+        marginLeft: 0,
+        marginStart: 0,
+        paddingHorizontal: 0,
+        paddingLeft: 0,
+        paddingStart: 0,
+        padding: 0,
     },
 });

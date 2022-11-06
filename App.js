@@ -1,30 +1,93 @@
+import { View, TouchableOpacity, Dimensions } from "react-native";
 import * as React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import { NavigationContainer } from "@react-navigation/native";
 
 import GetStarted from "./screens/GetStarted";
-import EnrollFirstApp from "./screens/EnrollFirstApp";
+import EnrollApps from "./screens/EnrollApps";
 import QrCodeReader from "./screens/QrCodeReader";
 import AppsEnrolledList from "./screens/AppsEnrolledList";
+import IntroPages from "./screens/IntroPages";
+import EmailOTP from "./screens/EmailOTP";
+
+import CustomHeaderLeft from "./components/CustomHeaderLeft";
+import CustomHeaderRight from "./components/CustomHeaderRight";
 
 const MyStack = createStackNavigator();
 
 export default function App() {
     return (
         <NavigationContainer>
-            <MyStack.Navigator
-                screenOptions={{ headerShown: false }}
-                initialRouteName="GetStarted"
-            >
-                <MyStack.Screen name="GetStarted" component={GetStarted} />
+            <MyStack.Navigator initialRouteName="GetStarted">
                 <MyStack.Screen
-                    name="EnrollFirstApp"
-                    component={EnrollFirstApp}
+                    name="GetStarted"
+                    component={GetStarted}
+                    options={{ header: () => null }}
                 />
-                <MyStack.Screen name="QrCodeReader" component={QrCodeReader} />
+                <MyStack.Screen
+                    name="IntroPages"
+                    component={IntroPages}
+                    options={{ header: () => null }}
+                />
+                <MyStack.Screen
+                    name="EnrollApps"
+                    component={EnrollApps}
+                    options={{
+                        headerTitle: () => null,
+                        headerLeft: () => (
+                            <CustomHeaderLeft navigateTo={"IntroPages"} />
+                        ),
+                        headerRight: () => <CustomHeaderRight />,
+                        headerStyle: {
+                            shadowColor: "black",
+                            elevation: 5,
+                        },
+                    }}
+                />
+                <MyStack.Screen
+                    name="QrCodeReader"
+                    component={QrCodeReader}
+                    options={{
+                        headerTitle: () => null,
+                        headerLeft: () => (
+                            <CustomHeaderLeft navigateTo={"EnrollApps"} />
+                        ),
+                        headerRight: () => <CustomHeaderRight />,
+                        headerStyle: {
+                            shadowColor: "black",
+                            elevation: 5,
+                        },
+                    }}
+                />
                 <MyStack.Screen
                     name="AppsEnrolledList"
                     component={AppsEnrolledList}
+                    options={{
+                        headerTitle: () => null,
+                        headerLeft: () => (
+                            <CustomHeaderLeft navigateTo={"IntroPages"} />
+                        ),
+                        headerRight: () => <CustomHeaderRight />,
+                        headerStyle: {
+                            shadowColor: "black",
+                            elevation: 5,
+                        },
+                    }}
+                />
+                <MyStack.Screen
+                    name="EmailOTP"
+                    component={EmailOTP}
+                    options={{
+                        headerTitle: () => null,
+                        headerLeft: () => (
+                            <CustomHeaderLeft navigateTo={"AppsEnrolledList"} />
+                        ),
+                        headerRight: () => <CustomHeaderRight />,
+                        headerStyle: {
+                            shadowColor: "black",
+                            elevation: 5,
+                        },
+                    }}
                 />
             </MyStack.Navigator>
         </NavigationContainer>

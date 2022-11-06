@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Dimensions } from "react-native";
 import React from "react";
 
 import AppEnrolledCard from "../components/AppEnrolledCard";
+import EnrollOptionButton from "../components/EnrollOptionButton";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -13,6 +14,7 @@ const appEnrolledList = [
         username: "user1",
         appLogo:
             "https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png",
+        nextPage: "EmailOTP",
     },
     {
         id: 1,
@@ -30,42 +32,44 @@ const appEnrolledList = [
     },
 ];
 
-export default function AppsEnrolledList() {
+export default function AppsEnrolledList({ navigation }) {
     return (
         <View style={styles.container}>
-            <Text style={styles.title}>App Name</Text>
-            <View style={styles.desContainer}>
-                <Text style={styles.description}>
-                    Your app's list with 2FA activated are:
-                </Text>
+            <Text style={styles.title}>Aplicaciones registradas</Text>
+            <View style={styles.cardContainer}>
+                {appEnrolledList.map((appCard) => (
+                    <AppEnrolledCard
+                        key={appCard.id}
+                        appInfo={appCard}
+                        navigation={navigation}
+                    />
+                ))}
             </View>
-            {appEnrolledList.map((appCard) => (
-                <AppEnrolledCard key={appCard.id} appInfo={appCard} />
-            ))}
+            <View style={styles.button}>
+                <EnrollOptionButton navigation={navigation} />
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
-        paddingTop: height * 0.08,
         flex: 1,
         backgroundColor: "#fff",
-        alignItems: "center",
     },
     title: {
+        paddingTop: height * 0.035,
+        paddingLeft: width * 0.06,
         fontSize: height * 0.028,
-        fontWeight: "500",
+        fontWeight: "bold",
+        marginBottom: height * 0.01,
     },
-    desContainer: {
-        width: "100%",
-        paddingTop: height * 0.015,
-        paddingBottom: height * 0.01,
+    cardContainer: {
+        alignItems: "center",
     },
-    description: {
-        marginLeft: width * 0.08,
-        marginRight: width * 0.08,
-        fontSize: height * 0.025,
-        fontWeight: "400",
+    button: {
+        position: "absolute",
+        marginTop: height * 0.63,
+        marginLeft: width * 0.71,
     },
 });

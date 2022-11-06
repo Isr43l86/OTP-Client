@@ -1,44 +1,31 @@
-import {
-    StyleSheet,
-    Text,
-    TouchableWithoutFeedback,
-    Animated,
-    Dimensions,
-} from "react-native";
+import { Dimensions } from "react-native";
 import React from "react";
+import { IconButton } from "@react-native-material/core";
+
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const height = Dimensions.get("window").height;
-const width = Dimensions.get("window").width;
 
-export default function EnrollOptionButton({
-    textButton,
-    navigation,
-    navigateTo,
-}) {
+export default function EnrollOptionButton({ navigation }) {
     return (
-        <TouchableWithoutFeedback
-            onPress={() => navigation.navigate(navigateTo)}
-        >
-            <Animated.View style={styles.button}>
-                <Text style={styles.textButton}>{textButton}</Text>
-            </Animated.View>
-        </TouchableWithoutFeedback>
+        <IconButton
+            icon={() => (
+                <MaterialCommunityIcons
+                    name="plus"
+                    size={height * 0.06}
+                    color="white"
+                />
+            )}
+            backgroundColor="#1B8DE4"
+            color="#DBF0FF"
+            style={{
+                elevation: 10,
+                shadowColor: "black",
+                height: height * 0.1,
+                width: height * 0.1,
+                borderRadius: height,
+            }}
+            onPress={() => navigation.navigate("QrCodeReader")}
+        />
     );
 }
-
-const styles = StyleSheet.create({
-    button: {
-        marginTop: height * 0.025,
-        backgroundColor: "#EBEBEB",
-        height: height * 0.065,
-        width: width * 0.85,
-        borderRadius: 25,
-        justifyContent: "center",
-        paddingLeft: width * 0.05,
-        paddingRight: width * 0.05,
-    },
-    textButton: {
-        fontSize: height * 0.025,
-        fontWeight: "400",
-    },
-});

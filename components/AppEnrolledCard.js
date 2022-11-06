@@ -1,8 +1,7 @@
 import {
     StyleSheet,
     Text,
-    Animated,
-    TouchableWithoutFeedback,
+    TouchableOpacity,
     Image,
     Dimensions,
     View,
@@ -12,35 +11,41 @@ import React from "react";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-export default function AppEnrolledCard({ appInfo }) {
+export default function AppEnrolledCard({ appInfo, navigation }) {
     return (
-        <TouchableWithoutFeedback
-            onPress={() => navigation.navigate(navigateTo)}
-        >
-            <View style={styles.button}>
-                <View style={styles.logoAppContainer}>
-                    <Image
-                        source={{ uri: appInfo.appLogo }}
-                        style={styles.logoApp}
-                    />
+        <View style={styles.buttonContainer}>
+            <TouchableOpacity
+                onPress={() => navigation.navigate(appInfo.nextPage)}
+                activeOpacity={0.5}
+            >
+                <View style={styles.button}>
+                    <View style={styles.logoAppContainer}>
+                        <Image
+                            source={{ uri: appInfo.appLogo }}
+                            style={styles.logoApp}
+                        />
+                    </View>
+                    <Text style={styles.textButton}>
+                        {appInfo.appName} ({appInfo.username})
+                    </Text>
                 </View>
-                <Text style={styles.textButton}>
-                    {appInfo.appName} ({appInfo.username})
-                </Text>
-            </View>
-        </TouchableWithoutFeedback>
+            </TouchableOpacity>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    buttonContainer: {
+        marginTop: height * 0.02,
+        backgroundColor: "white",
+        borderRadius: 10,
+        elevation: 5,
+    },
     button: {
         flexDirection: "row",
         alignItems: "center",
-        marginTop: height * 0.025,
-        backgroundColor: "#EBEBEB",
         height: height * 0.065,
-        width: width * 0.85,
-        borderRadius: 25,
+        width: width * 0.87,
         paddingLeft: width * 0.05,
         paddingRight: width * 0.05,
     },

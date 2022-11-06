@@ -86,9 +86,9 @@ const styles = StyleSheet.create({
     buttonContainer: {
         flexDirection: "row",
         justifyContent: "space-between",
-        marginLeft: "30%",
+        marginLeft: "35%",
         marginTop: "6%",
-        width: "70%",
+        width: "65%",
     },
     buttonText: {
         fontSize: height * 0.024,

@@ -49,7 +49,7 @@ export default function OTPinput() {
                 <View
                     style={
                         isOTPCompleted
-                            ? styles.otpInputFocused
+                            ? styles.otpIsCompleted
                             : isFocused1
                             ? styles.otpInputFocused
                             : styles.otpInput
@@ -88,7 +88,7 @@ export default function OTPinput() {
                 <View
                     style={
                         isOTPCompleted
-                            ? styles.otpInputFocused
+                            ? styles.otpIsCompleted
                             : isFocused2
                             ? styles.otpInputFocused
                             : styles.otpInput
@@ -108,12 +108,12 @@ export default function OTPinput() {
                                 ...otp,
                                 2: text,
                             });
-                            text
-                                ? thirdImput.current.focus()
-                                : firstImput.current.focus();
                         }}
                         onKeyPress={({ nativeEvent }) => {
-                            if (nativeEvent.key === "Backspace") {
+                            if (
+                                nativeEvent.key === "Backspace" &&
+                                otp["2"] === ""
+                            ) {
                                 firstImput.current.focus();
                                 setIsOTPCompleted(false);
                             }
@@ -130,7 +130,7 @@ export default function OTPinput() {
                 <View
                     style={
                         isOTPCompleted
-                            ? styles.otpInputFocused
+                            ? styles.otpIsCompleted
                             : isFocused3
                             ? styles.otpInputFocused
                             : styles.otpInput
@@ -150,12 +150,12 @@ export default function OTPinput() {
                                 ...otp,
                                 3: text,
                             });
-                            text
-                                ? fourthImput.current.focus()
-                                : secondImput.current.focus();
                         }}
                         onKeyPress={({ nativeEvent }) => {
-                            if (nativeEvent.key === "Backspace") {
+                            if (
+                                nativeEvent.key === "Backspace" &&
+                                otp["3"] === ""
+                            ) {
                                 secondImput.current.focus();
                                 setIsOTPCompleted(false);
                             }
@@ -172,7 +172,7 @@ export default function OTPinput() {
                 <View
                     style={
                         isOTPCompleted
-                            ? styles.otpInputFocused
+                            ? styles.otpIsCompleted
                             : isFocused4
                             ? styles.otpInputFocused
                             : styles.otpInput
@@ -192,12 +192,12 @@ export default function OTPinput() {
                                 ...otp,
                                 4: text,
                             });
-                            text
-                                ? fifthImput.current.focus()
-                                : thirdImput.current.focus();
                         }}
                         onKeyPress={({ nativeEvent }) => {
-                            if (nativeEvent.key === "Backspace") {
+                            if (
+                                nativeEvent.key === "Backspace" &&
+                                otp["4"] === ""
+                            ) {
                                 thirdImput.current.focus();
                                 setIsOTPCompleted(false);
                             }
@@ -214,7 +214,7 @@ export default function OTPinput() {
                 <View
                     style={
                         isOTPCompleted
-                            ? styles.otpInputFocused
+                            ? styles.otpIsCompleted
                             : isFocused5
                             ? styles.otpInputFocused
                             : styles.otpInput
@@ -234,12 +234,12 @@ export default function OTPinput() {
                                 ...otp,
                                 5: text,
                             });
-                            text
-                                ? sixthImput.current.focus()
-                                : fourthImput.current.focus();
                         }}
                         onKeyPress={({ nativeEvent }) => {
-                            if (nativeEvent.key === "Backspace") {
+                            if (
+                                nativeEvent.key === "Backspace" &&
+                                otp["5"] === ""
+                            ) {
                                 fourthImput.current.focus();
                                 setIsOTPCompleted(false);
                             }
@@ -256,7 +256,7 @@ export default function OTPinput() {
                 <View
                     style={
                         isOTPCompleted
-                            ? styles.otpInputFocused
+                            ? styles.otpIsCompleted
                             : isFocused6
                             ? styles.otpInputFocused
                             : styles.otpInput
@@ -327,6 +327,14 @@ const styles = StyleSheet.create({
     otpInputFocused: {
         borderColor: "#1B8DE4",
         borderWidth: 1.5,
+        borderRadius: 5,
+        justifyContent: "center",
+        height: height * 0.075,
+        width: height * 0.075,
+    },
+    otpIsCompleted: {
+        borderColor: "#86d96f",
+        borderWidth: 2.3,
         borderRadius: 5,
         justifyContent: "center",
         height: height * 0.075,

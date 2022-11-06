@@ -1,9 +1,18 @@
-import { StyleSheet, Text, View, FlatList, Animated } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    FlatList,
+    Animated,
+    Dimensions,
+} from "react-native";
 import React, { useState, useRef } from "react";
 import IntroSlides from "../data/IntroSlides";
 import OnboardingItem from "./OnboardingItem";
 import Paginator from "./Paginator";
 import NextButton from "./NextButton";
+
+const height = Dimensions.get("window").height;
 
 export default function Onboarding({ navigation }) {
     const [currentIndex, setCurrentIndex] = useState(0);
@@ -28,7 +37,7 @@ export default function Onboarding({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={{ flex: 3 }}>
+            <View>
                 <FlatList
                     data={IntroSlides}
                     renderItem={({ item }) => <OnboardingItem item={item} />}
@@ -47,12 +56,14 @@ export default function Onboarding({ navigation }) {
                     ref={slidesRef}
                 />
             </View>
-            <NextButton
-                scrollTo={scrollTo}
-                data={IntroSlides}
-                currentIndex={currentIndex}
-            />
-            <Paginator data={IntroSlides} scrollX={scrollX} />
+            <View style={styles.footerContainer}>
+                <NextButton
+                    scrollTo={scrollTo}
+                    data={IntroSlides}
+                    currentIndex={currentIndex}
+                />
+                <Paginator data={IntroSlides} scrollX={scrollX} />
+            </View>
         </View>
     );
 }
@@ -60,7 +71,13 @@ export default function Onboarding({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: "flex-end",
+        alignItems: "center",
+    },
+    footerContainer: {
         justifyContent: "center",
         alignItems: "center",
+        position: "absolute",
+        height: height * 0.25,
     },
 });

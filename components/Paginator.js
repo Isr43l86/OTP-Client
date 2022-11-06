@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         height: height * 0.07,
-        marginTop: height * 0.013,
+        marginTop: height * 0.04,
     },
     dot: {
         height: height * 0.012,

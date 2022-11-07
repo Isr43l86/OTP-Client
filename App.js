@@ -6,9 +6,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import GetStarted from "./screens/GetStarted";
 import EnrollApps from "./screens/EnrollApps";
 import QrCodeReader from "./screens/QrCodeReader";
-import AppsEnrolledList from "./screens/AppsEnrolledList";
 import IntroPages from "./screens/IntroPages";
-import EmailOTP from "./screens/EmailOTP";
+import SendOTP from "./screens/SendOTP";
 
 import CustomHeaderLeft from "./components/CustomHeaderLeft";
 import CustomHeaderRight from "./components/CustomHeaderRight";
@@ -47,7 +46,9 @@ export default function App() {
                 <MyStack.Screen
                     name="QrCodeReader"
                     component={QrCodeReader}
+                    screenOptions={{ unmountOnBlur: true }}
                     options={{
+                        unmountOnBlur: true,
                         headerTitle: () => null,
                         headerLeft: () => (
                             <CustomHeaderLeft navigateTo={"EnrollApps"} />
@@ -60,27 +61,12 @@ export default function App() {
                     }}
                 />
                 <MyStack.Screen
-                    name="AppsEnrolledList"
-                    component={AppsEnrolledList}
+                    name="SendOTP"
+                    component={SendOTP}
                     options={{
                         headerTitle: () => null,
                         headerLeft: () => (
-                            <CustomHeaderLeft navigateTo={"IntroPages"} />
-                        ),
-                        headerRight: () => <CustomHeaderRight />,
-                        headerStyle: {
-                            shadowColor: "black",
-                            elevation: 5,
-                        },
-                    }}
-                />
-                <MyStack.Screen
-                    name="EmailOTP"
-                    component={EmailOTP}
-                    options={{
-                        headerTitle: () => null,
-                        headerLeft: () => (
-                            <CustomHeaderLeft navigateTo={"AppsEnrolledList"} />
+                            <CustomHeaderLeft navigateTo={"EnrollApps"} />
                         ),
                         headerRight: () => <CustomHeaderRight />,
                         headerStyle: {

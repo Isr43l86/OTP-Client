@@ -18,7 +18,11 @@ export default function CustomHeaderLeft({ navigateTo }) {
                     color="black"
                 />
             )}
-            onPress={() => navigation.navigate(navigateTo)}
+            onPress={() =>
+                navigateTo === "SendOTP"
+                    ? navigation.navigate(navigateTo, { deliveryMethod: "qr" })
+                    : navigation.navigate(navigateTo)
+            }
         />
     );
 }

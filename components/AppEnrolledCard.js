@@ -12,10 +12,15 @@ const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 export default function AppEnrolledCard({ appInfo, navigation }) {
+    const NEXT_PAGE = "SendOTP";
     return (
         <View style={styles.buttonContainer}>
             <TouchableOpacity
-                onPress={() => navigation.navigate(appInfo.nextPage)}
+                onPress={() =>
+                    navigation.navigate(NEXT_PAGE, {
+                        deliveryMethod: appInfo.deliveryMethod,
+                    })
+                }
                 activeOpacity={0.5}
             >
                 <View style={styles.button}>

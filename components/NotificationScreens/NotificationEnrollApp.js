@@ -18,10 +18,11 @@ export default function NotificationEnrollApp({
     setScanned,
     navigation,
     navigateTo,
+    notificationMessage,
 }) {
     const showToastMessage = () => {
         ToastAndroid.showWithGravityAndOffset(
-            "Aplicación registrada exitosamente!",
+            notificationMessage,
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM,
             0,

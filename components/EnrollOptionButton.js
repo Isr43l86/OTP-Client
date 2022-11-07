@@ -7,6 +7,8 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 const height = Dimensions.get("window").height;
 
 export default function EnrollOptionButton({ navigation }) {
+    const PREVIOUS_SCREEN = "EnrollApps";
+    const NOTIFICATION_MESSAGE = "Aplicación registrada exitosamente!";
     return (
         <IconButton
             icon={() => (
@@ -25,7 +27,12 @@ export default function EnrollOptionButton({ navigation }) {
                 width: height * 0.1,
                 borderRadius: height,
             }}
-            onPress={() => navigation.navigate("QrCodeReader")}
+            onPress={() =>
+                navigation.navigate("QrCodeReader", {
+                    previousScreen: PREVIOUS_SCREEN,
+                    notificationMessage: NOTIFICATION_MESSAGE,
+                })
+            }
         />
     );
 }

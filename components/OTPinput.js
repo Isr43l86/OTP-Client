@@ -4,6 +4,7 @@ import {
     Text,
     TextInput,
     Dimensions,
+    ToastAndroid,
     TouchableOpacity,
 } from "react-native";
 import React, { useRef, useState, useEffect } from "react";
@@ -11,7 +12,7 @@ import React, { useRef, useState, useEffect } from "react";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-export default function OTPinput() {
+export default function OTPinput({ navigation, nextPage }) {
     const firstImput = useRef();
     const secondImput = useRef();
     const thirdImput = useRef();
@@ -42,6 +43,16 @@ export default function OTPinput() {
             ? setIsOTPCompleted(true)
             : setIsOTPCompleted(false);
     }, [otp]);
+
+    const showToastMessage = () => {
+        ToastAndroid.showWithGravityAndOffset(
+            "OTP enviado exitosamente!",
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            0,
+            height * 0.15
+        );
+    };
 
     return (
         <View style={styles.container}>
@@ -299,6 +310,10 @@ export default function OTPinput() {
                             : { backgroundColor: "#BAC0CA" },
                     ]}
                     activeOpacity={0.5}
+                    onPress={() => {
+                        navigation.navigate(nextPage);
+                        showToastMessage();
+                    }}
                 >
                     <Text style={styles.buttonText}>ENVIAR</Text>
                 </TouchableOpacity>

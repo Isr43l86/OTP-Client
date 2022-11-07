@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Camera } from "expo-camera";
+import { useIsFocused } from "@react-navigation/native";
 
 import {
     TopLeftCorner,
@@ -24,12 +25,17 @@ const width = Dimensions.get("window").width;
 
 const APP_NAME = "Apps safe";
 const ENROLL_APP = "App test";
-const PREVIOUS_SCREEN = "EnrollApps";
 
-export default function QrCodeCam({ navigation, navigateTo }) {
+export default function QrCodeCam({
+    navigation,
+    navigateTo,
+    previousScreen,
+    notificationMessage,
+}) {
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [confirmationMessage, setConfirmationMessage] = useState(false);
+    const isFocused = useIsFocused();
 
     useEffect(() => {
         (async () => {
@@ -38,11 +44,23 @@ export default function QrCodeCam({ navigation, navigateTo }) {
         })();
     }, []);
 
-    const handleBarCodeScanned = ({ type, data }) => {
+    const handleBarCodeScannedEnrollApp = ({ type, data }) => {
         setScanned(true);
         setConfirmationMessage(true);
         //alert(`Bar code with type ${type} and data ${Linking.openURL(`${data}`)} has been scanned`);
         //alert(`Bar code with type ${type} and data ${data} has been scanned`);
+    };
+
+    const handleBarCodeScannedOTP = ({ type, data }) => {
+        setScanned(true);
+        ToastAndroid.showWithGravityAndOffset(
+            notificationMessage,
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            0,
+            height * 0.15
+        );
+        navigation.navigate(navigateTo);
     };
 
     /*if (hasCameraPermission === null) {
@@ -53,7 +71,7 @@ export default function QrCodeCam({ navigation, navigateTo }) {
             <NotificattionRejectCamPermission
                 APP_NAME={APP_NAME}
                 navigation={navigation}
-                PREVIOUS_SCREEN={PREVIOUS_SCREEN}
+                PREVIOUS_SCREEN={previousScreen}
             />
         );
     }
@@ -72,12 +90,25 @@ export default function QrCodeCam({ navigation, navigateTo }) {
                     setScanned={setScanned}
                     navigation={navigation}
                     navigateTo={navigateTo}
+                    notificationMessage={notificationMessage}
                 />
             </Modal>
-            <Camera
-                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                style={{ height: height, width: width }}
-            ></Camera>
+            <>
+                {isFocused && (
+                    <Camera
+                        onBarCodeScanned={
+                            previousScreen === "SendOTP"
+                                ? scanned
+                                    ? undefined
+                                    : handleBarCodeScannedOTP
+                                : scanned
+                                ? undefined
+                                : handleBarCodeScannedEnrollApp
+                        }
+                        style={{ height: height, width: width }}
+                    ></Camera>
+                )}
+            </>
             <View style={styles.topContainer}></View>
             <View style={styles.bottomContainer}></View>
             <View style={styles.leftContainer}></View>

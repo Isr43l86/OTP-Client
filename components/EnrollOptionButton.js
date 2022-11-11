@@ -24,7 +24,7 @@ export default function EnrollOptionButton({ navigation }) {
                 />
             )}
             backgroundColor={ColorPalette.PRIMARY_COLOR}
-            color={ColorPalette.WHITE}
+            color={ColorPalette.PRESSED_BUTTON}
             style={{
                 elevation: 10,
                 shadowColor: ColorPalette.BLACK,

@@ -24,6 +24,8 @@ export const ColorPalette = {
     WHITE: "#ffffff",
     PRIMARY_COLOR: "#1B8DE4",
     DISABLED_COLOR: "#BAC0CA",
+    ALERT_TEXT_OPTIONS: "#015BBB",
+    PRESSED_BUTTON: "#DBF0FF",
 };
 
 export const ScreensNames = {

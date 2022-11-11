@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: height * 0.024,
-        color: ColorPalette.PRIMARY_COLOR,
+        color: ColorPalette.ALERT_TEXT_OPTIONS,
         fontWeight: "bold",
     },
 });

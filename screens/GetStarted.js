@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import logo from "../assets/images/Logo.png";
+import { ScreensNames, ColorPalette } from "../data/GlobalVariables";
 
 const height = Dimensions.get("window").height;
 
 export default function GetStarted({ navigation }) {
     setTimeout(() => {
-        navigation.navigate("IntroPages");
+        navigation.navigate(ScreensNames.INTRODUCTION_PAGE);
     }, 1500);
     return (
         <View style={styles.container}>
@@ -23,7 +24,7 @@ const styles = StyleSheet.create({
     container: {
         paddingTop: height * 0.19,
         flex: 1,
-        backgroundColor: "#1B8DE4",
+        backgroundColor: ColorPalette.PRIMARY_COLOR,
         alignItems: "center",
     },
     imageContainer: {
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
     },
     slogan: {
         fontSize: height * 0.055,
-        color: "white",
+        color: ColorPalette.WHITE,
         fontWeight: "bold",
     },
 });

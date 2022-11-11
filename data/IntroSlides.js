@@ -1,7 +1,7 @@
 export default [
     {
         id: "1",
-        title: "Doble factor de autenticación",
+        title: "Doble factor de\nautenticación",
         description:
             "Mejora la seguridad de tus\naplicaciones mediante\nla verificación de dos pasos\nusando contraseñas de\nun solo uso (OTP)",
         image: require("../assets/images/IntroPage1Image.png"),

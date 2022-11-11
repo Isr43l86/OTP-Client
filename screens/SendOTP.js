@@ -11,25 +11,30 @@ import {
 } from "react-native";
 import React from "react";
 
-import metodosEntrega from "../data/MetodosEntrega";
+import {
+    DeliveryMethods,
+    ColorPalette,
+    ScreensNames,
+    NotificationMessages,
+} from "../data/GlobalVariables";
 import OTPinput from "../components/OTPinput";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 export default function SendOTP({ route, navigation }) {
-    const NEXT_PAGE = "AppsEnrolledList";
-    const SCAN_SCREEN = "QrCodeReader";
-    const PREVIOUS_SCREEN = "SendOTP";
-    const NOTIFICATION_MESSAGE = "OTP enviado exitosamente!";
+    const NEXT_PAGE = ScreensNames.HOME_PAGE;
+    const SCAN_SCREEN = ScreensNames.SCAN_QRCODE;
+    const PREVIOUS_PAGE = ScreensNames.ENTER_OTP;
+    const NOTIFICATION_MESSAGE = NotificationMessages.OTP_SENDED_SUCCESS;
 
     const { deliveryMethod } = route.params;
-    const indexOfMethod = metodosEntrega.findIndex((item) => {
+    const indexOfMethod = DeliveryMethods.findIndex((item) => {
         return item.type === deliveryMethod;
     });
 
-    const image = metodosEntrega[indexOfMethod].image;
-    const description = metodosEntrega[indexOfMethod].description;
+    const image = DeliveryMethods[indexOfMethod].image;
+    const description = DeliveryMethods[indexOfMethod].description;
 
     function ScanOTP() {
         return (
@@ -45,8 +50,8 @@ export default function SendOTP({ route, navigation }) {
                         activeOpacity={0.5}
                         onPress={() => {
                             navigation.navigate(SCAN_SCREEN, {
-                                previousScreen: PREVIOUS_SCREEN,
-                                notificationMessage: NOTIFICATION_MESSAGE,
+                                PREVIOUS_PAGE: PREVIOUS_PAGE,
+                                NOTIFICATION_MESSAGE: NOTIFICATION_MESSAGE,
                             });
                         }}
                     >
@@ -68,7 +73,7 @@ export default function SendOTP({ route, navigation }) {
                     style={styles.otpContainer}
                     onPress={Keyboard.dismiss}
                 >
-                    <OTPinput navigation={navigation} nextPage={NEXT_PAGE} />
+                    <OTPinput navigation={navigation} NEXT_PAGE={NEXT_PAGE} />
                 </Pressable>
             </>
         );
@@ -100,13 +105,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: "center",
-        backgroundColor: "white",
+        backgroundColor: ColorPalette.WHITE,
     },
     imageContainer: {
-        marginTop: height * 0.07,
+        marginTop: height * 0.09,
         alignItems: "center",
         justifyContent: "center",
-        height: height * 0.155,
+        height: height * 0.135,
         width: width,
     },
     image: {
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
         width: width,
     },
     textContainer: {
-        marginTop: height * 0.025,
+        marginTop: height * 0.04,
         width: width * 0.8,
     },
     text: {
@@ -124,22 +129,22 @@ const styles = StyleSheet.create({
     otpContainer: {
         alignItems: "center",
         justifyContent: "center",
-        marginTop: height * 0.12,
+        marginTop: height * 0.1,
     },
     buttonContainer: {
         marginTop: height * 0.318,
     },
     button: {
         justifyContent: "center",
-        height: height * 0.08,
+        height: height * 0.07,
         width: width * 0.83,
         borderRadius: 50,
-        backgroundColor: "#1B8DE4",
+        backgroundColor: ColorPalette.PRIMARY_COLOR,
     },
     buttonText: {
         textAlign: "center",
         color: "white",
         fontWeight: "bold",
-        fontSize: height * 0.027,
+        fontSize: height * 0.025,
     },
 });

@@ -8,6 +8,8 @@ import {
 } from "react-native";
 import React from "react";
 
+import { ColorPalette } from "../../data/GlobalVariables";
+
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
@@ -17,12 +19,13 @@ export default function NotificationEnrollApp({
     setConfirmationMessage,
     setScanned,
     navigation,
-    navigateTo,
-    notificationMessage,
+    NEXT_PAGE,
+    PREVIOUS_PAGE,
+    NOTIFICATION_MESSAGE,
 }) {
     const showToastMessage = () => {
         ToastAndroid.showWithGravityAndOffset(
-            notificationMessage,
+            NOTIFICATION_MESSAGE,
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM,
             0,
@@ -41,6 +44,7 @@ export default function NotificationEnrollApp({
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
                         onPress={() => {
+                            navigation.navigate(PREVIOUS_PAGE);
                             setConfirmationMessage(false);
                             setScanned(false);
                         }}
@@ -50,7 +54,7 @@ export default function NotificationEnrollApp({
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
-                            navigation.navigate(navigateTo);
+                            navigation.navigate(NEXT_PAGE);
                             showToastMessage();
                         }}
                         activeOpacity={0.5}
@@ -76,9 +80,9 @@ const styles = StyleSheet.create({
         paddingBottom: height * 0.035,
         paddingLeft: width * 0.06,
         paddingRight: width * 0.06,
-        backgroundColor: "white",
+        backgroundColor: ColorPalette.WHITE,
         borderRadius: 10,
-        shadowColor: "black",
+        shadowColor: ColorPalette.BLACK,
         elevation: 5,
     },
     textConfirmationMessage: {
@@ -93,7 +97,7 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: height * 0.024,
-        color: "#015BBB",
+        color: ColorPalette.PRIMARY_COLOR,
         fontWeight: "bold",
     },
 });

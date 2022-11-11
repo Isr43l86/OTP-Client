@@ -16,6 +16,7 @@ import {
     BottomLeftCorner,
     BottomRightCorner,
 } from "../components/BorderQRCode";
+import { APP_NAME, ScreensNames } from "../data/GlobalVariables";
 
 import NotificationEnrollApp from "./NotificationScreens/NotificationEnrollApp";
 import NotificattionRejectCamPermission from "./NotificationScreens/NotificattionRejectCamPermission";
@@ -23,14 +24,13 @@ import NotificattionRejectCamPermission from "./NotificationScreens/Notificattio
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-const APP_NAME = "Apps safe";
 const ENROLL_APP = "App test";
 
 export default function QrCodeCam({
     navigation,
-    navigateTo,
-    previousScreen,
-    notificationMessage,
+    NEXT_PAGE,
+    PREVIOUS_PAGE,
+    NOTIFICATION_MESSAGE,
 }) {
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
@@ -54,13 +54,13 @@ export default function QrCodeCam({
     const handleBarCodeScannedOTP = ({ type, data }) => {
         setScanned(true);
         ToastAndroid.showWithGravityAndOffset(
-            notificationMessage,
+            NOTIFICATION_MESSAGE,
             ToastAndroid.SHORT,
             ToastAndroid.BOTTOM,
             0,
             height * 0.15
         );
-        navigation.navigate(navigateTo);
+        navigation.navigate(NEXT_PAGE);
     };
 
     /*if (hasCameraPermission === null) {
@@ -71,7 +71,7 @@ export default function QrCodeCam({
             <NotificattionRejectCamPermission
                 APP_NAME={APP_NAME}
                 navigation={navigation}
-                PREVIOUS_SCREEN={previousScreen}
+                PREVIOUS_PAGE={PREVIOUS_PAGE}
             />
         );
     }
@@ -89,15 +89,16 @@ export default function QrCodeCam({
                     setConfirmationMessage={setConfirmationMessage}
                     setScanned={setScanned}
                     navigation={navigation}
-                    navigateTo={navigateTo}
-                    notificationMessage={notificationMessage}
+                    NEXT_PAGE={NEXT_PAGE}
+                    PREVIOUS_PAGE={PREVIOUS_PAGE}
+                    NOTIFICATION_MESSAGE={NOTIFICATION_MESSAGE}
                 />
             </Modal>
             <>
                 {isFocused && (
                     <Camera
                         onBarCodeScanned={
-                            previousScreen === "SendOTP"
+                            PREVIOUS_PAGE === ScreensNames.ENTER_OTP
                                 ? scanned
                                     ? undefined
                                     : handleBarCodeScannedOTP

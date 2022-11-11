@@ -6,6 +6,7 @@ import {
     Dimensions,
 } from "react-native";
 import React from "react";
+import { ColorPalette } from "../data/GlobalVariables";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -31,18 +32,18 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     button: {
-        backgroundColor: "white",
+        backgroundColor: ColorPalette.WHITE,
         width: width * 0.45,
         height: height * 0.06,
         justifyContent: "center",
         borderRadius: 50,
-        borderColor: "black",
+        borderColor: ColorPalette.BLACK,
         borderWidth: 2,
     },
     text: {
-        color: "black",
+        color: ColorPalette.BLACK,
         textAlign: "center",
-        fontSize: height * 0.03,
+        fontSize: height * 0.028,
         fontWeight: "bold",
     },
 });

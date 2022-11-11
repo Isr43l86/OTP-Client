@@ -10,9 +10,10 @@ import React from "react";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
+import { ScreensNames, ColorPalette } from "../data/GlobalVariables";
 
 export default function AppEnrolledCard({ appInfo, navigation }) {
-    const NEXT_PAGE = "SendOTP";
+    const NEXT_PAGE = ScreensNames.ENTER_OTP;
     return (
         <View style={styles.buttonContainer}>
             <TouchableOpacity
@@ -42,7 +43,7 @@ export default function AppEnrolledCard({ appInfo, navigation }) {
 const styles = StyleSheet.create({
     buttonContainer: {
         marginTop: height * 0.02,
-        backgroundColor: "white",
+        backgroundColor: ColorPalette.WHITE,
         borderRadius: 10,
         elevation: 5,
     },
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
     },
     logoAppContainer: {
         height: height * 0.047,
-        width: width * 0.079,
+        width: height * 0.047,
         overflow: "hidden",
         borderRadius: 20,
     },

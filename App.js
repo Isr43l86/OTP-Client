@@ -34,7 +34,7 @@ export default function App() {
                     options={{
                         headerTitle: () => null,
                         headerLeft: () => (
-                            <CustomHeaderLeft navigateTo={"IntroPages"} />
+                            <CustomHeaderLeft PREVIOUS_PAGE={"IntroPages"} />
                         ),
                         headerRight: () => <CustomHeaderRight />,
                         headerStyle: {
@@ -51,7 +51,7 @@ export default function App() {
                         unmountOnBlur: true,
                         headerTitle: () => null,
                         headerLeft: () => (
-                            <CustomHeaderLeft navigateTo={"EnrollApps"} />
+                            <CustomHeaderLeft PREVIOUS_PAGE={"EnrollApps"} />
                         ),
                         headerRight: () => <CustomHeaderRight />,
                         headerStyle: {
@@ -66,7 +66,7 @@ export default function App() {
                     options={{
                         headerTitle: () => null,
                         headerLeft: () => (
-                            <CustomHeaderLeft navigateTo={"EnrollApps"} />
+                            <CustomHeaderLeft PREVIOUS_PAGE={"EnrollApps"} />
                         ),
                         headerRight: () => <CustomHeaderRight />,
                         headerStyle: {

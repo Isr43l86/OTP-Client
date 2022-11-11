@@ -1,5 +1,7 @@
-import { StyleSheet, Text, View, Animated, Dimensions } from "react-native";
+import { StyleSheet, View, Animated, Dimensions } from "react-native";
 import React from "react";
+
+import { ColorPalette } from "../data/GlobalVariables";
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
     dot: {
         height: height * 0.012,
         borderRadius: 10,
-        backgroundColor: "#1B8DE4",
+        backgroundColor: ColorPalette.PRIMARY_COLOR,
         marginHorizontal: width * 0.013,
     },
 });

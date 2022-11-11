@@ -1,27 +1,33 @@
 import { Dimensions } from "react-native";
 import React from "react";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { IconButton } from "@react-native-material/core";
 import { useNavigation } from "@react-navigation/native";
 
-const height = Dimensions.get("window").height;
+import { ScreensNames, DeliveryMethods } from "../data/GlobalVariables";
 
-export default function CustomHeaderLeft({ navigateTo }) {
+const height = Dimensions.get("window").height;
+const width = Dimensions.get("window").width;
+
+export default function CustomHeaderLeft({ PREVIOUS_PAGE }) {
     const navigation = useNavigation();
 
     return (
         <IconButton
+            style={{ marginLeft: width * 0.03 }}
             icon={() => (
-                <MaterialCommunityIcons
-                    name="chevron-left"
-                    size={height * 0.06}
+                <Ionicons
+                    name="chevron-back"
+                    size={height * 0.045}
                     color="black"
                 />
             )}
             onPress={() =>
-                navigateTo === "SendOTP"
-                    ? navigation.navigate(navigateTo, { deliveryMethod: "qr" })
-                    : navigation.navigate(navigateTo)
+                PREVIOUS_PAGE === ScreensNames.ENTER_OTP
+                    ? navigation.navigate(PREVIOUS_PAGE, {
+                          deliveryMethod: DeliveryMethods[2].type,
+                      })
+                    : navigation.navigate(PREVIOUS_PAGE)
             }
         />
     );

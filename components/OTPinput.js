@@ -12,7 +12,7 @@ import React, { useRef, useState, useEffect } from "react";
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
-export default function OTPinput({ navigation, nextPage }) {
+export default function OTPinput({ navigation, NEXT_PAGE }) {
     const firstImput = useRef();
     const secondImput = useRef();
     const thirdImput = useRef();
@@ -54,6 +54,11 @@ export default function OTPinput({ navigation, nextPage }) {
         );
     };
 
+    const validateOptInput = (text) => {
+        const re = /^[0-9]$/;
+        return re.test(text);
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.otpInputContainer}>
@@ -71,16 +76,21 @@ export default function OTPinput({ navigation, nextPage }) {
                         keyboardType="number-pad"
                         onBlur={() => setFocused1(false)}
                         onFocus={() => setFocused1(true)}
+                        value={otp["1"]}
                         maxLength={1}
                         ref={firstImput}
-                        autoFocus={true}
-                        caretHidden={true}
+                        cursorColor={"#1B8DE4"}
                         onChangeText={(text) => {
-                            setOtp({
-                                ...otp,
-                                1: text,
-                            });
-                            text && secondImput.current.focus();
+                            validateOptInput(text)
+                                ? setOtp({
+                                      ...otp,
+                                      1: text,
+                                  })
+                                : setOtp({
+                                      ...otp,
+                                      1: "",
+                                  });
+                            text != "" ? secondImput.current.focus() : null;
                         }}
                         onKeyPress={({ nativeEvent }) => {
                             if (
@@ -113,12 +123,17 @@ export default function OTPinput({ navigation, nextPage }) {
                         value={otp["2"]}
                         maxLength={1}
                         ref={secondImput}
-                        caretHidden={true}
                         onChangeText={(text) => {
-                            setOtp({
-                                ...otp,
-                                2: text,
-                            });
+                            validateOptInput(text)
+                                ? setOtp({
+                                      ...otp,
+                                      2: text,
+                                  })
+                                : setOtp({
+                                      ...otp,
+                                      2: "",
+                                  });
+                            text != "" ? thirdImput.current.focus() : null;
                         }}
                         onKeyPress={({ nativeEvent }) => {
                             if (
@@ -155,12 +170,17 @@ export default function OTPinput({ navigation, nextPage }) {
                         value={otp["3"]}
                         maxLength={1}
                         ref={thirdImput}
-                        caretHidden={true}
                         onChangeText={(text) => {
-                            setOtp({
-                                ...otp,
-                                3: text,
-                            });
+                            validateOptInput(text)
+                                ? setOtp({
+                                      ...otp,
+                                      3: text,
+                                  })
+                                : setOtp({
+                                      ...otp,
+                                      3: "",
+                                  });
+                            text != "" ? fourthImput.current.focus() : null;
                         }}
                         onKeyPress={({ nativeEvent }) => {
                             if (
@@ -197,12 +217,17 @@ export default function OTPinput({ navigation, nextPage }) {
                         value={otp["4"]}
                         maxLength={1}
                         ref={fourthImput}
-                        caretHidden={true}
                         onChangeText={(text) => {
-                            setOtp({
-                                ...otp,
-                                4: text,
-                            });
+                            validateOptInput(text)
+                                ? setOtp({
+                                      ...otp,
+                                      4: text,
+                                  })
+                                : setOtp({
+                                      ...otp,
+                                      4: "",
+                                  });
+                            text != "" ? fifthImput.current.focus() : null;
                         }}
                         onKeyPress={({ nativeEvent }) => {
                             if (
@@ -239,12 +264,17 @@ export default function OTPinput({ navigation, nextPage }) {
                         value={otp["5"]}
                         maxLength={1}
                         ref={fifthImput}
-                        caretHidden={true}
                         onChangeText={(text) => {
-                            setOtp({
-                                ...otp,
-                                5: text,
-                            });
+                            validateOptInput(text)
+                                ? setOtp({
+                                      ...otp,
+                                      5: text,
+                                  })
+                                : setOtp({
+                                      ...otp,
+                                      5: "",
+                                  });
+                            text != "" ? sixthImput.current.focus() : null;
                         }}
                         onKeyPress={({ nativeEvent }) => {
                             if (
@@ -281,15 +311,24 @@ export default function OTPinput({ navigation, nextPage }) {
                         value={otp["6"]}
                         maxLength={1}
                         ref={sixthImput}
-                        caretHidden={true}
                         onChangeText={(text) => {
-                            setOtp({
-                                ...otp,
-                                6: text,
-                            });
-                            !text && fifthImput.current.focus();
+                            validateOptInput(text)
+                                ? setOtp({
+                                      ...otp,
+                                      6: text,
+                                  })
+                                : setOtp({
+                                      ...otp,
+                                      6: "",
+                                  });
                         }}
                         onKeyPress={({ nativeEvent }) => {
+                            if (
+                                nativeEvent.key === "Backspace" &&
+                                otp["6"] != ""
+                            ) {
+                                setIsOTPCompleted(false);
+                            }
                             if (
                                 nativeEvent.key === "Backspace" &&
                                 otp["6"] === ""
@@ -311,7 +350,7 @@ export default function OTPinput({ navigation, nextPage }) {
                     ]}
                     activeOpacity={0.5}
                     onPress={() => {
-                        navigation.navigate(nextPage);
+                        navigation.navigate(NEXT_PAGE);
                         showToastMessage();
                     }}
                 >
@@ -336,24 +375,24 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         justifyContent: "center",
-        height: height * 0.075,
-        width: height * 0.075,
+        height: height * 0.065,
+        width: height * 0.065,
     },
     otpInputFocused: {
-        borderColor: "#1B8DE4",
+        borderColor: "black",
         borderWidth: 1.5,
         borderRadius: 5,
         justifyContent: "center",
-        height: height * 0.075,
-        width: height * 0.075,
+        height: height * 0.065,
+        width: height * 0.065,
     },
     otpIsCompleted: {
-        borderColor: "#86d96f",
-        borderWidth: 2.3,
+        borderColor: "#1B8DE4",
+        borderWidth: 2,
         borderRadius: 5,
         justifyContent: "center",
-        height: height * 0.075,
-        width: height * 0.075,
+        height: height * 0.065,
+        width: height * 0.065,
     },
     otpText: {
         fontSize: height * 0.04,
@@ -362,11 +401,11 @@ const styles = StyleSheet.create({
         textAlign: "center",
     },
     buttonContainer: {
-        marginTop: height * 0.12,
+        marginTop: height * 0.11,
     },
     button: {
         justifyContent: "center",
-        height: height * 0.08,
+        height: height * 0.07,
         width: width * 0.83,
         borderRadius: 50,
     },
@@ -374,6 +413,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "white",
         fontWeight: "bold",
-        fontSize: height * 0.027,
+        fontSize: height * 0.025,
     },
 });

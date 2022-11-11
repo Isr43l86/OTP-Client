@@ -3,26 +3,28 @@ import React, { useEffect } from "react";
 
 import QrCodeCam from "../components/QrCodeCam";
 import CustomHeaderLeft from "../components/CustomHeaderLeft";
-
-const nextPage = "EnrollApps";
+import { ScreensNames } from "../data/GlobalVariables";
 
 export default function QrCodeReader({ route, navigation }) {
-    const { previousScreen, notificationMessage } = route.params;
+    const { PREVIOUS_PAGE, NOTIFICATION_MESSAGE } = route.params;
+    const NEXT_PAGE = ScreensNames.HOME_PAGE;
 
     useEffect(() => {
         navigation.setOptions({
-            headerLeft: () => <CustomHeaderLeft navigateTo={previousScreen} />,
+            headerLeft: () => (
+                <CustomHeaderLeft PREVIOUS_PAGE={PREVIOUS_PAGE} />
+            ),
         });
-    }, [navigation, previousScreen]);
+    }, [navigation, PREVIOUS_PAGE]);
 
     return (
         <View style={styles.container}>
             <View style={styles.scannerContainer}>
                 <QrCodeCam
                     navigation={navigation}
-                    navigateTo={nextPage}
-                    previousScreen={previousScreen}
-                    notificationMessage={notificationMessage}
+                    NEXT_PAGE={NEXT_PAGE}
+                    PREVIOUS_PAGE={PREVIOUS_PAGE}
+                    NOTIFICATION_MESSAGE={NOTIFICATION_MESSAGE}
                 />
             </View>
         </View>

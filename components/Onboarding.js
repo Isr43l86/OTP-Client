@@ -1,11 +1,4 @@
-import {
-    StyleSheet,
-    Text,
-    View,
-    FlatList,
-    Animated,
-    Dimensions,
-} from "react-native";
+import { StyleSheet, View, FlatList, Animated, Dimensions } from "react-native";
 import React, { useState, useRef } from "react";
 import IntroSlides from "../data/IntroSlides";
 import OnboardingItem from "./OnboardingItem";
@@ -23,7 +16,7 @@ export default function Onboarding({ navigation }) {
         setCurrentIndex(viewableItems[0].index);
     }).current;
 
-    const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
+    const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 30 }).current;
 
     const scrollTo = () => {
         console.log(`${currentIndex} - ${slidesRef.length}`);

@@ -13,7 +13,7 @@ const width = Dimensions.get("window").width;
 export default function NotificattionRejectCamPermission({
     APP_NAME,
     navigation,
-    PREVIOUS_SCREEN,
+    PREVIOUS_PAGE,
 }) {
     return (
         <View style={styles.centeredAlert}>
@@ -26,7 +26,7 @@ export default function NotificattionRejectCamPermission({
                 </Text>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
-                        onPress={() => navigation.navigate(PREVIOUS_SCREEN)}
+                        onPress={() => navigation.navigate(PREVIOUS_PAGE)}
                         activeOpacity={0.5}
                     >
                         <Text style={styles.buttonText}>ENTENDIDO</Text>

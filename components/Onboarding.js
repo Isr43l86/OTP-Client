@@ -5,6 +5,8 @@ import OnboardingItem from "./OnboardingItem";
 import Paginator from "./Paginator";
 import NextButton from "./NextButton";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const height = Dimensions.get("window").height;
 
 export default function Onboarding({ navigation }) {
@@ -16,6 +18,14 @@ export default function Onboarding({ navigation }) {
         setCurrentIndex(viewableItems[0].index);
     }).current;
 
+    const updateShowOnboarding = async () => {
+        try {
+            await AsyncStorage.setItem("showOnboarding", "notShow");
+        } catch (error) {
+            alert(error);
+        }
+    };
+
     const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 30 }).current;
 
     const scrollTo = () => {
@@ -23,6 +33,7 @@ export default function Onboarding({ navigation }) {
         if (currentIndex < IntroSlides.length - 1) {
             slidesRef.current.scrollToIndex({ index: currentIndex + 1 });
         } else {
+            updateShowOnboarding();
             navigation.navigate("EnrollApps");
             console.log("Last item");
         }

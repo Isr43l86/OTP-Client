@@ -5,6 +5,8 @@ import AppEnrolledCard from "../components/AppEnrolledCard";
 import EnrollOptionButton from "../components/EnrollOptionButton";
 import { ColorPalette, EnrolledListTest } from "../data/GlobalVariables";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 

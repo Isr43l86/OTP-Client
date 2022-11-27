@@ -34,7 +34,7 @@ export default function App() {
                     options={{
                         headerTitle: () => null,
                         headerLeft: () => (
-                            <CustomHeaderLeft PREVIOUS_PAGE={"IntroPages"} />
+                            <CustomHeaderLeft PREVIOUS_PAGE={"GetStarted"} />
                         ),
                         headerRight: () => <CustomHeaderRight />,
                         headerStyle: {

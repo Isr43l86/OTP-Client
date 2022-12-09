@@ -10,6 +10,10 @@ import React from "react";
 
 import { ColorPalette } from "../../data/GlobalVariables";
 
+import { db } from "../../config/fb";
+import { addDoc, collection } from "firebase/firestore";
+import axios from "axios";
+
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
@@ -17,11 +21,15 @@ export default function NotificationEnrollApp({
     ENROLL_APP,
     APP_NAME,
     setConfirmationMessage,
+    setLoadingWarning,
     setScanned,
     navigation,
     NEXT_PAGE,
     PREVIOUS_PAGE,
     NOTIFICATION_MESSAGE,
+    userInfo,
+    activate2FA_API,
+    generateJWT_USER_API,
 }) {
     const showToastMessage = () => {
         ToastAndroid.showWithGravityAndOffset(
@@ -31,6 +39,54 @@ export default function NotificationEnrollApp({
             0,
             height * 0.15
         );
+    };
+
+    const handleRejectEnrollProcess = () => {
+        setConfirmationMessage(false);
+        navigation.navigate(PREVIOUS_PAGE);
+        setScanned(false);
+    };
+
+    const handleConfirmEnrollProcess = async () => {
+        setConfirmationMessage(false);
+        setLoadingWarning(true);
+        const id = userInfo._id;
+
+        const bearerToken = await axios
+            .post(generateJWT_USER_API, {
+                id: id,
+                username: userInfo.username,
+            })
+            .then((response) => {
+                return response.data.token;
+            });
+
+        const newData = {
+            typeOfDelivery: userInfo.twoFactorAuthentication.deliveryMethod,
+        };
+        const statusCode = await axios
+            .put(`${activate2FA_API}${id}`, newData, {
+                headers: { Authorization: `bearer ${bearerToken}` },
+            })
+            .then((response) => {
+                return response;
+            });
+        if (statusCode.status === 201) {
+            userInfo.twoFactorAuthentication.activated = true;
+        }
+        saveNewUser();
+    };
+
+    const saveNewUser = async () => {
+        try {
+            const docRef = await addDoc(collection(db, "users"), userInfo);
+            console.log(docRef.id);
+            setLoadingWarning(false);
+            navigation.navigate(NEXT_PAGE);
+            showToastMessage();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -43,20 +99,13 @@ export default function NotificationEnrollApp({
                 </Text>
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate(PREVIOUS_PAGE);
-                            setConfirmationMessage(false);
-                            setScanned(false);
-                        }}
+                        onPress={() => handleRejectEnrollProcess()}
                         activeOpacity={0.5}
                     >
                         <Text style={styles.buttonText}>RECHAZAR</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate(NEXT_PAGE);
-                            showToastMessage();
-                        }}
+                        onPress={() => handleConfirmEnrollProcess()}
                         activeOpacity={0.5}
                     >
                         <Text style={styles.buttonText}>PERMITIR</Text>

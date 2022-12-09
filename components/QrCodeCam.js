@@ -20,6 +20,9 @@ import { APP_NAME, ScreensNames } from "../data/GlobalVariables";
 
 import NotificationEnrollApp from "./NotificationScreens/NotificationEnrollApp";
 import NotificattionRejectCamPermission from "./NotificationScreens/NotificattionRejectCamPermission";
+import NotificationLoadEnrollApp from "./NotificationScreens/NotificationLoadEnrollApp";
+
+import axios from "axios";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -35,6 +38,10 @@ export default function QrCodeCam({
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [confirmationMessage, setConfirmationMessage] = useState(false);
+    const [loadingWarning, setLoadingWarning] = useState(false);
+    var [newCollection, setNewCollection] = useState();
+    const [activate2FA_API, setActivate2FA_API] = useState("");
+    const [generateJWT_USER_API, setGenerateJWT_USER_API] = useState("");
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -44,11 +51,41 @@ export default function QrCodeCam({
         })();
     }, []);
 
-    const handleBarCodeScannedEnrollApp = ({ type, data }) => {
+    const handleBarCodeScannedEnrollApp = async ({ type, data }) => {
         setScanned(true);
         setConfirmationMessage(true);
-        //alert(`Bar code with type ${type} and data ${Linking.openURL(`${data}`)} has been scanned`);
-        //alert(`Bar code with type ${type} and data ${data} has been scanned`);
+        const [
+            enable2FA_API,
+            generateJWT_USER_API,
+            generateJWT_OTP_API,
+            sendOTP_API,
+            getAppInfo_API,
+            userInfo,
+        ] = data.split(";");
+        let apiInfo = {
+            enable2FA_API,
+            generateJWT_USER_API,
+            generateJWT_OTP_API,
+            sendOTP_API,
+            getAppInfo_API,
+        };
+        setActivate2FA_API(enable2FA_API);
+        setGenerateJWT_USER_API(generateJWT_USER_API);
+        let newUser = JSON.parse(userInfo);
+
+        let requestResult = await axios.get(getAppInfo_API).then((response) => {
+            return response.data;
+        });
+
+        let appInfo = {
+            appName: requestResult.appName,
+            appLogo: requestResult.appLogo.url,
+        };
+
+        newCollection = { ...newUser.currentUser, ...apiInfo, ...appInfo };
+        setNewCollection(newCollection);
+
+        console.log(newCollection);
     };
 
     const handleBarCodeScannedOTP = ({ type, data }) => {
@@ -63,9 +100,6 @@ export default function QrCodeCam({
         navigation.navigate(NEXT_PAGE);
     };
 
-    /*if (hasCameraPermission === null) {
-        return <Text>Requesting for Camera Permission</Text>;
-    }*/
     if (hasCameraPermission === false) {
         return (
             <NotificattionRejectCamPermission
@@ -87,12 +121,23 @@ export default function QrCodeCam({
                     ENROLL_APP={ENROLL_APP}
                     APP_NAME={APP_NAME}
                     setConfirmationMessage={setConfirmationMessage}
+                    setLoadingWarning={setLoadingWarning}
                     setScanned={setScanned}
                     navigation={navigation}
                     NEXT_PAGE={NEXT_PAGE}
                     PREVIOUS_PAGE={PREVIOUS_PAGE}
                     NOTIFICATION_MESSAGE={NOTIFICATION_MESSAGE}
+                    userInfo={newCollection}
+                    activate2FA_API={activate2FA_API}
+                    generateJWT_USER_API={generateJWT_USER_API}
                 />
+            </Modal>
+            <Modal
+                visible={loadingWarning}
+                transparent
+                onRequestClose={() => setLoadingWarning(false)}
+            >
+                <NotificationLoadEnrollApp />
             </Modal>
             <>
                 {isFocused && (

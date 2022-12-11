@@ -8,11 +8,29 @@ import {
     TouchableOpacity,
 } from "react-native";
 import React, { useRef, useState, useEffect } from "react";
+import io from "socket.io-client";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
+let socket;
 
-export default function OTPinput({ navigation, NEXT_PAGE }) {
+export default function OTPinput({ navigation, NEXT_PAGE, _id, username }) {
+    const initializeSocket = async (finalOTPValue) => {
+        try {
+            socket = io("http://192.168.1.16:4000", {
+                transports: ["websocket"],
+            });
+            console.log("initializing socket");
+
+            socket.on("connect", (data) => {
+                console.log("=======Socket connected=======");
+            });
+            socket.emit("sendOTPfromMobile", finalOTPValue);
+        } catch (error) {
+            console.log("socket is not initialized", error);
+        }
+    };
+
     const firstImput = useRef();
     const secondImput = useRef();
     const thirdImput = useRef();
@@ -57,6 +75,17 @@ export default function OTPinput({ navigation, NEXT_PAGE }) {
     const validateOptInput = (text) => {
         const re = /^[0-9]$/;
         return re.test(text);
+    };
+
+    const handleSendOTP = () => {
+        const finalOTPValue = `${otp["1"]}${otp["2"]}${otp["3"]}${otp["4"]}${otp["5"]}${otp["6"]}`;
+        const otpInfo = {
+            id: _id,
+            username: username,
+            otpValue: finalOTPValue,
+        };
+        initializeSocket(otpInfo);
+        console.log(finalOTPValue);
     };
 
     return (
@@ -350,6 +379,7 @@ export default function OTPinput({ navigation, NEXT_PAGE }) {
                     ]}
                     activeOpacity={0.5}
                     onPress={() => {
+                        handleSendOTP();
                         navigation.navigate(NEXT_PAGE);
                         showToastMessage();
                     }}

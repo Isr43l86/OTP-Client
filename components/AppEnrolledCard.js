@@ -19,7 +19,10 @@ export default function AppEnrolledCard({ appInfo, navigation }) {
             <TouchableOpacity
                 onPress={() =>
                     navigation.navigate(NEXT_PAGE, {
-                        deliveryMethod: appInfo.deliveryMethod,
+                        deliveryMethod:
+                            appInfo.twoFactorAuthentication.deliveryMethod,
+                        _id: appInfo._id,
+                        username: appInfo.username,
                     })
                 }
                 activeOpacity={0.5}

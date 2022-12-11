@@ -28,7 +28,8 @@ export default function SendOTP({ route, navigation }) {
     const PREVIOUS_PAGE = ScreensNames.ENTER_OTP;
     const NOTIFICATION_MESSAGE = NotificationMessages.OTP_SENDED_SUCCESS;
 
-    const { deliveryMethod } = route.params;
+    const { deliveryMethod, _id, username } = route.params;
+    console.log(deliveryMethod);
     const indexOfMethod = DeliveryMethods.findIndex((item) => {
         return item.type === deliveryMethod;
     });
@@ -73,7 +74,12 @@ export default function SendOTP({ route, navigation }) {
                     style={styles.otpContainer}
                     onPress={Keyboard.dismiss}
                 >
-                    <OTPinput navigation={navigation} NEXT_PAGE={NEXT_PAGE} />
+                    <OTPinput
+                        navigation={navigation}
+                        NEXT_PAGE={NEXT_PAGE}
+                        _id={_id}
+                        username={username}
+                    />
                 </Pressable>
             </>
         );
@@ -94,7 +100,7 @@ export default function SendOTP({ route, navigation }) {
                     />
                 </View>
                 <View style={styles.textContainer}>
-                    {deliveryMethod === "qr" ? <ScanOTP /> : <EnterOTP />}
+                    {deliveryMethod === "qr_code" ? <ScanOTP /> : <EnterOTP />}
                 </View>
             </Pressable>
         </KeyboardAvoidingView>

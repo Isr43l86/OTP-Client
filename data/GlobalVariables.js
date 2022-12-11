@@ -13,9 +13,15 @@ export const DeliveryMethods = [
     },
     {
         id: "2",
-        type: "qr",
+        type: "qr_code",
         description: "ccódigo QR",
         image: require("../assets/images/QROTP.png"),
+    },
+    {
+        id: "3",
+        type: "plain_text",
+        description: "la aplicación web",
+        image: require("../assets/images/plainTextOTP.png"),
     },
 ];
 

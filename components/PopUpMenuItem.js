@@ -30,7 +30,7 @@ export default function PopUpMenuItem({ popUpItem, navigation }) {
             />
             <Text
                 style={{
-                    paddingLeft: 10,
+                    paddingLeft: 16,
                     marginTop: -1,
                     fontSize: height * 0.02,
                 }}

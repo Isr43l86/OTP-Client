@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         backgroundColor: ColorPalette.WHITE,
     },
     imageContainer: {
-        marginTop: height * 0.09,
+        marginTop: height * 0.145,
         alignItems: "center",
         justifyContent: "center",
         height: height * 0.135,
@@ -125,11 +125,11 @@ const styles = StyleSheet.create({
         width: width,
     },
     textContainer: {
-        marginTop: height * 0.04,
+        marginTop: height * 0.05,
         width: width * 0.8,
     },
     text: {
-        fontSize: height * 0.025,
+        fontSize: height * 0.02,
         textAlign: "center",
     },
     otpContainer: {
@@ -142,8 +142,8 @@ const styles = StyleSheet.create({
     },
     button: {
         justifyContent: "center",
-        height: height * 0.07,
-        width: width * 0.83,
+        height: height * 0.06,
+        width: width * 0.805,
         borderRadius: 50,
         backgroundColor: ColorPalette.PRIMARY_COLOR,
     },
@@ -151,6 +151,6 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "white",
         fontWeight: "bold",
-        fontSize: height * 0.025,
+        fontSize: height * 0.022,
     },
 });

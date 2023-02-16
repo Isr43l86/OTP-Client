@@ -5,7 +5,6 @@ import { NavigationContainer } from "@react-navigation/native";
 import GetStarted from "./screens/GetStarted";
 import EnrollApps from "./screens/EnrollApps";
 import QrCodeReader from "./screens/QrCodeReader";
-import QrCodeForSendOTP from "./screens/QrCodeForSendOTP";
 import IntroPages from "./screens/IntroPages";
 import SendOTP from "./screens/SendOTP";
 
@@ -46,23 +45,6 @@ export default function App() {
                 <MyStack.Screen
                     name="QrCodeReader"
                     component={QrCodeReader}
-                    screenOptions={{ unmountOnBlur: true }}
-                    options={{
-                        unmountOnBlur: true,
-                        headerTitle: () => null,
-                        headerLeft: () => (
-                            <CustomHeaderLeft PREVIOUS_PAGE={"EnrollApps"} />
-                        ),
-                        headerRight: () => <CustomHeaderRight />,
-                        headerStyle: {
-                            shadowColor: "black",
-                            elevation: 5,
-                        },
-                    }}
-                />
-                <MyStack.Screen
-                    name="QrCodeForSendOTP"
-                    component={QrCodeForSendOTP}
                     screenOptions={{ unmountOnBlur: true }}
                     options={{
                         unmountOnBlur: true,

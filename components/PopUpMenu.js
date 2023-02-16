@@ -25,10 +25,10 @@ const styles = StyleSheet.create({
         flex: 0.15,
         paddingLeft: width * 0.05,
         paddingRight: width * 0.05,
-        width: width * 0.63,
+        width: width * 0.65,
         backgroundColor: ColorPalette.WHITE,
         marginTop: height * 0.07,
-        marginLeft: width * 0.28,
+        marginLeft: width * 0.26,
         elevation: 5,
     },
 });

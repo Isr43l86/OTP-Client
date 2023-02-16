@@ -1,11 +1,11 @@
 import { StyleSheet, View, BackHandler } from "react-native";
 import React, { useEffect } from "react";
 
-import QrCodeCam from "../components/QrCodeCam";
+import QrCodeCamForSendOTP from "../components/QrCodeCamForSendOTP";
 import CustomHeaderLeft from "../components/CustomHeaderLeft";
-import { ScreensNames, ColorPalette } from "../data/GlobalVariables";
+import { ScreensNames } from "../data/GlobalVariables";
 
-export default function QrCodeReader({ route, navigation }) {
+export default function QrCodeForSendOTP({ route, navigation }) {
     const { PREVIOUS_PAGE, NOTIFICATION_MESSAGE } = route.params;
     const NEXT_PAGE = ScreensNames.HOME_PAGE;
 
@@ -20,7 +20,7 @@ export default function QrCodeReader({ route, navigation }) {
     return (
         <View style={styles.container}>
             <View style={styles.scannerContainer}>
-                <QrCodeCam
+                <QrCodeCamForSendOTP
                     navigation={navigation}
                     NEXT_PAGE={NEXT_PAGE}
                     PREVIOUS_PAGE={PREVIOUS_PAGE}
@@ -33,9 +33,21 @@ export default function QrCodeReader({ route, navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        marginHorizontal: 0,
+        marginLeft: 0,
+        marginStart: 0,
+        paddingHorizontal: 0,
+        paddingLeft: 0,
+        paddingStart: 0,
+        padding: 0,
     },
     scannerContainer: {
-        flex: 1,
+        marginHorizontal: 0,
+        marginLeft: 0,
+        marginStart: 0,
+        paddingHorizontal: 0,
+        paddingLeft: 0,
+        paddingStart: 0,
+        padding: 0,
     },
 });

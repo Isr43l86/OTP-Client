@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
         marginRight: width * 0.02,
     },
     textLoading: {
-        fontSize: height * 0.025,
+        fontSize: height * 0.02,
     },
 });

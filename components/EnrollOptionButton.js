@@ -28,8 +28,8 @@ export default function EnrollOptionButton({ navigation }) {
             style={{
                 elevation: 10,
                 shadowColor: ColorPalette.BLACK,
-                height: height * 0.1,
-                width: height * 0.1,
+                height: height * 0.09,
+                width: height * 0.09,
                 borderRadius: height,
             }}
             onPress={() =>

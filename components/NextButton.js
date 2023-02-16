@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     },
     button: {
         backgroundColor: ColorPalette.WHITE,
-        width: width * 0.45,
-        height: height * 0.06,
+        width: width * 0.55,
+        height: height * 0.055,
         justifyContent: "center",
         borderRadius: 50,
         borderColor: ColorPalette.BLACK,
@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     text: {
         color: ColorPalette.BLACK,
         textAlign: "center",
-        fontSize: height * 0.028,
+        fontSize: height * 0.022,
         fontWeight: "bold",
     },
 });

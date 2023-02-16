@@ -7,7 +7,12 @@ import { useIsFocused } from "@react-navigation/native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import Constants from "expo-constants";
+import * as SecureStore from "expo-secure-store";
+
 const height = Dimensions.get("window").height;
+
+const USER_ID = "USER_ID";
 
 export default function GetStarted({ navigation }) {
     const [showOnboarding, setShowOnboarding] = useState(true);
@@ -22,9 +27,21 @@ export default function GetStarted({ navigation }) {
         }
     };
 
+    const checkIdEmeiHasBeenStored = async () => {
+        const result = await SecureStore.getItemAsync(USER_ID);
+        if (!result) {
+            const userID = Constants.installationId;
+            SecureStore.setItemAsync(USER_ID, userID);
+        }
+        if (result) {
+            console.log("id registrado");
+        }
+    };
+
     useEffect(() => {
         setTimeout(() => {
             checkIfIsFirstTimeOpeningApp();
+            checkIdEmeiHasBeenStored();
             showOnboarding
                 ? navigation.navigate(ScreensNames.INTRODUCTION_PAGE)
                 : navigation.navigate(ScreensNames.HOME_PAGE);

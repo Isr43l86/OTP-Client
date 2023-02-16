@@ -1,15 +1,18 @@
 import { StyleSheet, View, FlatList, Animated, Dimensions } from "react-native";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import IntroSlides from "../data/IntroSlides";
 import OnboardingItem from "./OnboardingItem";
 import Paginator from "./Paginator";
 import NextButton from "./NextButton";
+import { useIsFocused } from "@react-navigation/native";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const height = Dimensions.get("window").height;
 
 export default function Onboarding({ navigation }) {
+    const isFocused = useIsFocused();
+
     const [currentIndex, setCurrentIndex] = useState(0);
     const scrollX = useRef(new Animated.Value(0)).current;
     const slidesRef = useRef(null);
@@ -38,6 +41,11 @@ export default function Onboarding({ navigation }) {
             console.log("Last item");
         }
     };
+
+    useEffect(() => {
+        setCurrentIndex(0);
+        slidesRef.current.scrollToIndex({ index: 0 });
+    }, [isFocused]);
 
     return (
         <View style={styles.container}>

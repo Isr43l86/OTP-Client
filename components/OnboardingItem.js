@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
         height: height,
         width: width,
         alignItems: "center",
-        paddingTop: height * 0.11,
+        paddingTop: height * 0.25,
     },
     image: {
         flex: 0.2,
-        width: width * 0.6,
+        width: width * 0.5,
         resizeMode: "contain",
     },
     textContainer: {
@@ -36,12 +36,12 @@ const styles = StyleSheet.create({
     },
     title: {
         fontWeight: "bold",
-        fontSize: height * 0.04,
+        fontSize: height * 0.025,
         textAlign: "center",
     },
     description: {
         paddingTop: height * 0.03,
-        fontSize: height * 0.028,
+        fontSize: height * 0.02,
         textAlign: "center",
     },
 });

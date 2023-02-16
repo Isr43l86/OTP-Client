@@ -20,9 +20,10 @@ export default function AppEnrolledCard({ appInfo, navigation }) {
                 onPress={() =>
                     navigation.navigate(NEXT_PAGE, {
                         deliveryMethod:
-                            appInfo.twoFactorAuthentication.deliveryMethod,
-                        _id: appInfo._id,
-                        username: appInfo.username,
+                            appInfo.userInfo.twoFactorAuthentication
+                                .deliveryMethod,
+                        _id: appInfo.userInfo._id,
+                        username: appInfo.userInfo.username,
                     })
                 }
                 activeOpacity={0.5}
@@ -35,7 +36,7 @@ export default function AppEnrolledCard({ appInfo, navigation }) {
                         />
                     </View>
                     <Text style={styles.textButton}>
-                        {appInfo.appName} ({appInfo.username})
+                        {appInfo.appName} ({appInfo.userInfo.username})
                     </Text>
                 </View>
             </TouchableOpacity>
@@ -45,10 +46,12 @@ export default function AppEnrolledCard({ appInfo, navigation }) {
 
 const styles = StyleSheet.create({
     buttonContainer: {
-        marginTop: height * 0.02,
         backgroundColor: ColorPalette.WHITE,
         borderRadius: 10,
+        borderColor: ColorPalette.DISABLED_COLOR,
+        borderWidth: 1,
         elevation: 5,
+        marginBottom: height * 0.02,
     },
     button: {
         flexDirection: "row",
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     },
     textButton: {
         paddingLeft: 10,
-        fontSize: height * 0.025,
+        fontSize: height * 0.02,
         fontWeight: "490",
     },
 });

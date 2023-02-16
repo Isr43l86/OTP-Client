@@ -8,14 +8,17 @@ import {
 } from "react-native";
 import React from "react";
 
-import { ColorPalette } from "../../data/GlobalVariables";
+import { ColorPalette, NotificationMessages } from "../../data/GlobalVariables";
 
 import { db } from "../../config/fb";
 import { addDoc, collection } from "firebase/firestore";
 import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
+
+const USER_ID = "USER_ID";
 
 export default function NotificationEnrollApp({
     ENROLL_APP,
@@ -28,13 +31,21 @@ export default function NotificationEnrollApp({
     PREVIOUS_PAGE,
     NOTIFICATION_MESSAGE,
     userInfo,
-    activate2FA_API,
-    generateJWT_USER_API,
 }) {
     const showToastMessage = () => {
         ToastAndroid.showWithGravityAndOffset(
             NOTIFICATION_MESSAGE,
             ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            0,
+            height * 0.15
+        );
+    };
+
+    const showToastErorMessage = () => {
+        ToastAndroid.showWithGravityAndOffset(
+            NotificationMessages.APP_ENROLLED_FAIULER,
+            ToastAndroid.LONG,
             ToastAndroid.BOTTOM,
             0,
             height * 0.15
@@ -50,42 +61,44 @@ export default function NotificationEnrollApp({
     const handleConfirmEnrollProcess = async () => {
         setConfirmationMessage(false);
         setLoadingWarning(true);
-        const id = userInfo._id;
 
-        const bearerToken = await axios
-            .post(generateJWT_USER_API, {
-                id: id,
-                username: userInfo.username,
-            })
+        userInfo.twoFactorAuthentication.activated = true;
+
+        let requestResult = await axios
+            .get(userInfo.getAppInfo_API)
             .then((response) => {
-                return response.data.token;
+                return response.data;
             });
 
-        const newData = {
-            typeOfDelivery: userInfo.twoFactorAuthentication.deliveryMethod,
+        let appInfo = {
+            appName: requestResult.appName,
+            appLogo: requestResult.appLogo.url,
         };
-        const statusCode = await axios
-            .put(`${activate2FA_API}${id}`, newData, {
-                headers: { Authorization: `bearer ${bearerToken}` },
-            })
-            .then((response) => {
-                return response;
-            });
-        if (statusCode.status === 201) {
-            userInfo.twoFactorAuthentication.activated = true;
-        }
+
+        userInfo = { userInfo, ...appInfo };
+
+        console.log(userInfo);
+
         saveNewUser();
     };
 
     const saveNewUser = async () => {
         try {
-            const docRef = await addDoc(collection(db, "users"), userInfo);
+            const userID = await SecureStore.getItemAsync(USER_ID);
+            console.log(userID);
+            const docRef = await addDoc(
+                collection(db, "users", userID, userID),
+                userInfo
+            );
+
             console.log(docRef.id);
             setLoadingWarning(false);
             navigation.navigate(NEXT_PAGE);
             showToastMessage();
         } catch (error) {
             console.log(error);
+            navigation.navigate(NEXT_PAGE);
+            showToastErorMessage();
         }
     };
 
@@ -125,8 +138,8 @@ const styles = StyleSheet.create({
     },
     confirmationMessage: {
         width: width * 0.8,
-        paddingTop: height * 0.035,
-        paddingBottom: height * 0.035,
+        paddingTop: height * 0.02,
+        paddingBottom: height * 0.02,
         paddingLeft: width * 0.06,
         paddingRight: width * 0.06,
         backgroundColor: ColorPalette.WHITE,
@@ -135,7 +148,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     textConfirmationMessage: {
-        fontSize: height * 0.025,
+        fontSize: height * 0.02,
     },
     buttonContainer: {
         flexDirection: "row",
@@ -145,7 +158,7 @@ const styles = StyleSheet.create({
         width: "65%",
     },
     buttonText: {
-        fontSize: height * 0.024,
+        fontSize: height * 0.018,
         color: ColorPalette.ALERT_TEXT_OPTIONS,
         fontWeight: "bold",
     },

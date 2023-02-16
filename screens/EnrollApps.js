@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Dimensions } from "react-native";
+import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
 
 import AppEnrolledCard from "../components/AppEnrolledCard";
@@ -7,16 +7,20 @@ import { ColorPalette } from "../data/GlobalVariables";
 import { collection, query, onSnapshot } from "firebase/firestore";
 import { db } from "../config/fb";
 import LottieView from "lottie-react-native";
+import * as SecureStore from "expo-secure-store";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
+
+const USER_ID = "USER_ID";
 
 export default function EnrollApps({ navigation }) {
     const [userList, setUserLis] = useState();
     const [loading, setLoading] = useState(true);
 
     const getAppsEnrolledList = async () => {
-        const q = query(collection(db, "users"));
+        const userID = await SecureStore.getItemAsync(USER_ID);
+        const q = query(collection(db, "users", userID, userID));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             const users = [];
             querySnapshot.forEach((doc) => {
@@ -39,22 +43,22 @@ export default function EnrollApps({ navigation }) {
                     <>
                         <View style={styles.loadingScreenStyle}>
                             <LottieView
-                                source={require("../assets/animations/cicle_loadng_animation.json")}
+                                source={require("../assets/animations/square_loading animation.json")}
                                 autoPlay
                                 loop
                             />
                         </View>
                     </>
                 ) : (
-                    <>
+                    <ScrollView style={styles.scrollContainer}>
                         {userList.map((user) => (
                             <AppEnrolledCard
-                                key={user._id}
+                                key={user.userInfo._id}
                                 appInfo={user}
                                 navigation={navigation}
                             />
                         ))}
-                    </>
+                    </ScrollView>
                 )}
             </View>
             <View style={styles.button}>
@@ -72,8 +76,8 @@ const styles = StyleSheet.create({
     title: {
         paddingTop: height * 0.035,
         paddingLeft: width * 0.06,
-        paddingBottom: height * 0.015,
-        fontSize: height * 0.028,
+        paddingBottom: height * 0.025,
+        fontSize: height * 0.022,
         fontWeight: "bold",
     },
     loadingScreenStyle: {
@@ -90,5 +94,9 @@ const styles = StyleSheet.create({
         position: "absolute",
         marginTop: height * 0.68,
         marginLeft: width * 0.71,
+    },
+    scrollContainer: {
+        width: width * 0.9,
+        height: height * 0.8,
     },
 });

@@ -38,6 +38,7 @@ export const ScreensNames = {
     INTRODUCTION_PAGE: "IntroPages",
     HOME_PAGE: "EnrollApps",
     SCAN_QRCODE: "QrCodeReader",
+    SCAN_QRCODE_FOR_OTP: "QrCodeForSendOTP",
     ENTER_OTP: "SendOTP",
 };
 
@@ -70,7 +71,22 @@ export const EnrolledListTest = [
 
 export const NotificationMessages = {
     APP_ENROLLED_SUCCESS: "Aplicación registrada exitosamente!",
+    APP_ENROLLED_FAIULER:
+        "No se ha podido registrar la aplicación. Intentelo más tarde",
     OTP_SENDED_SUCCESS: "OTP enviado exitosamente!",
 };
 
 export const APP_NAME = "App safe";
+
+export const PopUpMenuOptions = [
+    {
+        id: "1",
+        description: "¿Cómo funciona?",
+        icon: require("../assets/images/ShowIntroPages.png"),
+    },
+    {
+        id: "2",
+        description: "Preguntas frecuentes",
+        icon: require("../assets/images/FAQ.png"),
+    },
+];

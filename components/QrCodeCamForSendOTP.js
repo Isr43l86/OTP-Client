@@ -22,15 +22,12 @@ import NotificationEnrollApp from "./NotificationScreens/NotificationEnrollApp";
 import NotificattionRejectCamPermission from "./NotificationScreens/NotificattionRejectCamPermission";
 import NotificationLoadEnrollApp from "./NotificationScreens/NotificationLoadEnrollApp";
 
-import io from "socket.io-client";
-
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
 
 const ENROLL_APP = "App test";
-let socket;
 
-export default function QrCodeCam({
+export default function QrCodeCamForSendOTP({
     navigation,
     NEXT_PAGE,
     PREVIOUS_PAGE,
@@ -38,9 +35,6 @@ export default function QrCodeCam({
 }) {
     const [hasCameraPermission, setHasCameraPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
-    const [confirmationMessage, setConfirmationMessage] = useState(false);
-    const [loadingWarning, setLoadingWarning] = useState(false);
-    var [newCollection, setNewCollection] = useState();
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -50,40 +44,13 @@ export default function QrCodeCam({
         })();
     }, []);
 
-    const initializeSocket = async (finalOTPValue) => {
-        try {
-            socket = io("http://192.168.1.41:4000", {
-                transports: ["websocket"],
-            });
-            console.log("initializing socket");
-
-            socket.on("connect", (data) => {
-                console.log("=======Socket connected=======");
-            });
-            socket.emit("sendOTPfromMobile", finalOTPValue);
-        } catch (error) {
-            console.log("socket is not initialized", error);
-        } finally {
-            console.log("final");
-        }
-    };
-
-    const showToastMessage = () => {
-        setScanned(true);
-        ToastAndroid.showWithGravityAndOffset(
-            NOTIFICATION_MESSAGE,
-            ToastAndroid.SHORT,
-            ToastAndroid.BOTTOM,
-            0,
-            height * 0.15
-        );
-        navigation.navigate(NEXT_PAGE);
-    };
+    useEffect(() => {
+        setScanned(false);
+    }, [isFocused]);
 
     const handleBarCodeScannedEnrollApp = async ({ type, data }) => {
-        setScanned(true);
+        /*setScanned(true);
         setConfirmationMessage(true);
-        console.log(data);
         const [generateJWT_OTP_API, sendOTP_API, getAppInfo_API, userInfo] =
             data.split(";");
         let apiInfo = {
@@ -93,22 +60,20 @@ export default function QrCodeCam({
         };
         let newUser = JSON.parse(userInfo);
         newCollection = { ...newUser.currentUser, ...apiInfo };
-        setNewCollection(newCollection);
-
-        console.log(newCollection);
+        setNewCollection(newCollection);*/
+        console.log("escaneado");
     };
 
     const handleBarCodeScannedOTP = ({ type, data }) => {
-        const [generateJWT_OTP_API, otpValue, userId, username] =
-            data.split(";");
-        const otpInfoQR = {
-            id: userId,
-            username: username,
-            otpValue: otpValue,
-        };
-        console.log(otpInfoQR);
-        initializeSocket(otpInfoQR);
-        showToastMessage();
+        setScanned(true);
+        ToastAndroid.showWithGravityAndOffset(
+            NOTIFICATION_MESSAGE,
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            0,
+            height * 0.15
+        );
+        navigation.navigate(NEXT_PAGE);
     };
 
     if (hasCameraPermission === false) {
@@ -123,7 +88,7 @@ export default function QrCodeCam({
 
     return (
         <View style={styles.container}>
-            <Modal
+            {/*<Modal
                 visible={confirmationMessage}
                 transparent
                 onRequestClose={() => setConfirmationMessage(false)}
@@ -147,7 +112,7 @@ export default function QrCodeCam({
                 onRequestClose={() => setLoadingWarning(false)}
             >
                 <NotificationLoadEnrollApp />
-            </Modal>
+    </Modal>*/}
             <>
                 {isFocused && (
                     <Camera
@@ -160,10 +125,7 @@ export default function QrCodeCam({
                                 ? undefined
                                 : handleBarCodeScannedEnrollApp
                         }
-                        style={{
-                            height: height,
-                            width: width * 0.5 + width,
-                        }}
+                        style={{ height: height, width: width }}
                     ></Camera>
                 )}
             </>
@@ -205,7 +167,7 @@ const styles = StyleSheet.create({
     topContainer: {
         position: "absolute",
         width: width,
-        height: height * 0.24,
+        height: height * 0.2,
         backgroundColor: "rgba(0, 0, 0, 0.35)",
     },
     bottomContainer: {
@@ -217,24 +179,24 @@ const styles = StyleSheet.create({
     },
     leftContainer: {
         position: "absolute",
-        marginTop: height * 0.24,
+        marginTop: height * 0.2,
         width: width * 0.16,
-        height: height * 0.34,
+        height: height * 0.38,
         backgroundColor: "rgba(0, 0, 0, 0.35)",
     },
     rightContainer: {
         position: "absolute",
         marginLeft: width * 0.84,
-        marginTop: height * 0.24,
+        marginTop: height * 0.2,
         width: width * 0.16,
-        height: height * 0.34,
+        height: height * 0.38,
         backgroundColor: "rgba(0, 0, 0, 0.35)",
     },
     topLeftCorner: {
         position: "absolute",
         aspectRatio: 1,
-        marginTop: height * 0.222,
-        marginLeft: width * 0.128,
+        marginTop: height * 0.1815,
+        marginLeft: width * 0.132,
         height: height * 0.09,
         width: height * 0.09,
         opacity: 0.8,
@@ -242,8 +204,8 @@ const styles = StyleSheet.create({
     topRightCorner: {
         position: "absolute",
         aspectRatio: 1,
-        marginTop: height * 0.222,
-        marginLeft: width * 0.717,
+        marginTop: height * 0.1813,
+        marginLeft: width * 0.729,
         height: height * 0.09,
         width: height * 0.09,
         opacity: 0.8,
@@ -252,7 +214,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         aspectRatio: 1,
         marginTop: height * 0.51,
-        marginLeft: width * 0.128,
+        marginLeft: width * 0.133,
         height: height * 0.09,
         width: height * 0.09,
         opacity: 0.8,
@@ -261,7 +223,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         aspectRatio: 1,
         marginTop: height * 0.51,
-        marginLeft: width * 0.717,
+        marginLeft: width * 0.729,
         height: height * 0.09,
         width: height * 0.09,
         opacity: 0.8,
@@ -274,7 +236,7 @@ const styles = StyleSheet.create({
     },
     text: {
         color: "white",
-        fontSize: height * 0.02,
+        fontSize: height * 0.027,
         textAlign: "center",
     },
 });

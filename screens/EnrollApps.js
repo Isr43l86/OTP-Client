@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Dimensions, ScrollView } from "react-native";
+import {
+    StyleSheet,
+    Text,
+    View,
+    Dimensions,
+    ScrollView,
+    FlatList,
+} from "react-native";
 import React, { useState, useEffect } from "react";
 
 import AppEnrolledCard from "../components/AppEnrolledCard";

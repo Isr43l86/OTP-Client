@@ -20,6 +20,10 @@ export default function FAQ() {
             </View>
             <View style={styles.container}>
                 <FlatList
+                    style={{
+                        marginBottom: height * 0.15,
+                        borderRadius: 15,
+                    }}
                     data={FAQ_ITEMS}
                     keyExtractor={(item) => item.id}
                     renderItem={({ item }) => <AccordeonItem item={item} />}

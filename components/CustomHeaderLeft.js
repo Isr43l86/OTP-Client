@@ -18,7 +18,7 @@ export default function CustomHeaderLeft({ PREVIOUS_PAGE }) {
             icon={() => (
                 <Ionicons
                     name="chevron-back"
-                    size={height * 0.045}
+                    size={height * 0.035}
                     color="black"
                 />
             )}

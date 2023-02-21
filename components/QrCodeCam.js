@@ -16,7 +16,11 @@ import {
     BottomLeftCorner,
     BottomRightCorner,
 } from "../components/BorderQRCode";
-import { APP_NAME, ScreensNames } from "../data/GlobalVariables";
+import {
+    APP_NAME,
+    ScreensNames,
+    NotificationMessages,
+} from "../data/GlobalVariables";
 
 import NotificationEnrollApp from "./NotificationScreens/NotificationEnrollApp";
 import NotificattionRejectCamPermission from "./NotificationScreens/NotificattionRejectCamPermission";
@@ -52,7 +56,7 @@ export default function QrCodeCam({
 
     const initializeSocket = async (finalOTPValue) => {
         try {
-            socket = io("http://192.168.1.41:4000", {
+            socket = io("http://192.168.1.16:4000", {
                 transports: ["websocket"],
             });
             console.log("initializing socket");
@@ -80,35 +84,54 @@ export default function QrCodeCam({
         navigation.navigate(NEXT_PAGE);
     };
 
-    const handleBarCodeScannedEnrollApp = async ({ type, data }) => {
+    const showInvalidQRToastMessage = () => {
         setScanned(true);
-        setConfirmationMessage(true);
-        console.log(data);
-        const [generateJWT_OTP_API, sendOTP_API, getAppInfo_API, userInfo] =
-            data.split(";");
-        let apiInfo = {
-            generateJWT_OTP_API,
-            sendOTP_API,
-            getAppInfo_API,
-        };
-        let newUser = JSON.parse(userInfo);
-        newCollection = { ...newUser.currentUser, ...apiInfo };
-        setNewCollection(newCollection);
+        ToastAndroid.showWithGravityAndOffset(
+            NotificationMessages.BAD_QR_CODE,
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            0,
+            height * 0.15
+        );
+        navigation.navigate(NEXT_PAGE);
+    };
 
-        console.log(newCollection);
+    const handleBarCodeScannedEnrollApp = async ({ type, data }) => {
+        try {
+            console.log(data);
+            const [generateJWT_OTP_API, sendOTP_API, getAppInfo_API, userInfo] =
+                data.split(";");
+            let apiInfo = {
+                generateJWT_OTP_API,
+                sendOTP_API,
+                getAppInfo_API,
+            };
+            let newUser = JSON.parse(userInfo);
+            newCollection = { ...newUser.currentUser, ...apiInfo };
+            setNewCollection(newCollection);
+            console.log(newCollection);
+            setScanned(true);
+            setConfirmationMessage(true);
+        } catch (error) {
+            showInvalidQRToastMessage();
+        }
     };
 
     const handleBarCodeScannedOTP = ({ type, data }) => {
-        const [generateJWT_OTP_API, otpValue, userId, username] =
-            data.split(";");
-        const otpInfoQR = {
-            id: userId,
-            username: username,
-            otpValue: otpValue,
-        };
-        console.log(otpInfoQR);
-        initializeSocket(otpInfoQR);
-        showToastMessage();
+        try {
+            const [generateJWT_OTP_API, otpValue, userId, username] =
+                data.split(";");
+            const otpInfoQR = {
+                id: userId,
+                username: username,
+                otpValue: otpValue,
+            };
+            console.log(otpInfoQR);
+            initializeSocket(otpInfoQR);
+            showToastMessage();
+        } catch (error) {
+            showInvalidQRToastMessage();
+        }
     };
 
     if (hasCameraPermission === false) {

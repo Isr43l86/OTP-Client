@@ -16,6 +16,8 @@ export default function PopUpMenuItem({ popUpItem, navigation }) {
         console.log(popUpItem.id);
         if (popUpItem.id === "1") {
             navigation.navigate(ScreensNames.INTRODUCTION_PAGE);
+        } else {
+            navigation.navigate(ScreensNames.FAQ);
         }
     };
 

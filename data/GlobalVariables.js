@@ -35,11 +35,12 @@ export const ColorPalette = {
 };
 
 export const ScreensNames = {
+    GET_STARTED: "GetStarted",
     INTRODUCTION_PAGE: "IntroPages",
     HOME_PAGE: "EnrollApps",
     SCAN_QRCODE: "QrCodeReader",
-    SCAN_QRCODE_FOR_OTP: "QrCodeForSendOTP",
     ENTER_OTP: "SendOTP",
+    FAQ: "FAQ",
 };
 
 export const EnrolledListTest = [
@@ -74,6 +75,8 @@ export const NotificationMessages = {
     APP_ENROLLED_FAIULER:
         "No se ha podido registrar la aplicación. Intentelo más tarde",
     OTP_SENDED_SUCCESS: "OTP enviado exitosamente!",
+    BAD_QR_CODE: "Código QR no válido",
+    UPDATE_ACCOUNT_SUCCESS: "Aplicación actualizada exitosamente!",
 };
 
 export const APP_NAME = "App safe";
@@ -88,5 +91,17 @@ export const PopUpMenuOptions = [
         id: "2",
         description: "Preguntas frecuentes",
         icon: require("../assets/images/FAQ.png"),
+    },
+];
+export const FAQ_ITEMS = [
+    {
+        id: "1",
+        question: "¿Cómo agrego una cuenta a AppSafe?",
+        answer: "Para agregar una aplicacción a AppSafe debes iniciar sesión en la cuenta en la cual deseas activar el doble factor de autenticación. Luego debes activar el doble factor de autenticación y seleccionar un método de entrega. Finalmente, cuando hayas finalizado el proceso de activación, aparecerá un código QR, el cual debes escanear con la aplicación AppSafe. Para comprobar que la cuenta se agregó correctamente, podras visualizar tu cuenta en la lista de aplicaciones registradas.",
+    },
+    {
+        id: "2",
+        question: "¿Cómo envio el OTP para poder tener acceso a mi cuenta?",
+        answer: "Para ingresar el OTP cuando tratas de acceder a una cuenta en especifico, debes seleccionar esta cuenta de la lista de aplicaciones registradas en AppSafe.",
     },
 ];

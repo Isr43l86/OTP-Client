@@ -47,7 +47,7 @@ export default function AppEnrolledCard({ appInfo, navigation }) {
 const styles = StyleSheet.create({
     buttonContainer: {
         backgroundColor: ColorPalette.WHITE,
-        borderRadius: 10,
+        borderRadius: 15,
         borderColor: ColorPalette.DISABLED_COLOR,
         borderWidth: 1,
         elevation: 5,

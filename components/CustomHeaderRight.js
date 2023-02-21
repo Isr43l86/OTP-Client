@@ -27,7 +27,7 @@ export default function CustomHeaderRight() {
                 icon={() => (
                     <Ionicons
                         name="ellipsis-vertical"
-                        size={height * 0.038}
+                        size={height * 0.03}
                         color="black"
                     />
                 )}

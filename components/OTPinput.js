@@ -17,7 +17,7 @@ let socket;
 export default function OTPinput({ navigation, NEXT_PAGE, _id, username }) {
     const initializeSocket = async (finalOTPValue) => {
         try {
-            socket = io("http://192.168.1.41:4000", {
+            socket = io("http://192.168.1.16:4000", {
                 transports: ["websocket"],
             });
             console.log("initializing socket");

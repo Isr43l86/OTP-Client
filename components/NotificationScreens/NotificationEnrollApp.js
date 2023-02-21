@@ -11,9 +11,17 @@ import React from "react";
 import { ColorPalette, NotificationMessages } from "../../data/GlobalVariables";
 
 import { db } from "../../config/fb";
-import { addDoc, collection } from "firebase/firestore";
+import {
+    addDoc,
+    collection,
+    query,
+    onSnapshot,
+    updateDoc,
+    doc,
+} from "firebase/firestore";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
+import { async } from "@firebase/util";
 
 const height = Dimensions.get("window").height;
 const width = Dimensions.get("window").width;
@@ -42,6 +50,16 @@ export default function NotificationEnrollApp({
         );
     };
 
+    const showUpdateSuccessToastMessage = () => {
+        ToastAndroid.showWithGravityAndOffset(
+            NotificationMessages.UPDATE_ACCOUNT_SUCCESS,
+            ToastAndroid.SHORT,
+            ToastAndroid.BOTTOM,
+            0,
+            height * 0.15
+        );
+    };
+
     const showToastErorMessage = () => {
         ToastAndroid.showWithGravityAndOffset(
             NotificationMessages.APP_ENROLLED_FAIULER,
@@ -58,28 +76,86 @@ export default function NotificationEnrollApp({
         setScanned(false);
     };
 
+    const checkIfIdANewUser = async () => {
+        return new Promise(async (resolve, reject) => {
+            const userID = await SecureStore.getItemAsync(USER_ID);
+            const q = query(collection(db, "users", userID, userID));
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
+                const newUser = [true];
+                querySnapshot.forEach((doc) => {
+                    if (doc.data().userInfo._id === userInfo._id) {
+                        newUser[0] = false;
+                    }
+                });
+                if (newUser[0]) {
+                    resolve(true);
+                } else {
+                    resolve(false);
+                }
+            });
+        });
+    };
+
+    const getExistingUserInfo = async () => {
+        return new Promise(async (resolve, reject) => {
+            const userID = await SecureStore.getItemAsync(USER_ID);
+            const q = query(collection(db, "users", userID, userID));
+            const unsubscribe = onSnapshot(q, (querySnapshot) => {
+                const newUser = ["hola"];
+                querySnapshot.forEach((doc) => {
+                    if (doc.data().userInfo._id === userInfo._id) {
+                        newUser[0] = doc.data().idDoc;
+                        resolve(doc.data().idDoc);
+                    }
+                });
+            });
+        });
+    };
+
     const handleConfirmEnrollProcess = async () => {
         setConfirmationMessage(false);
         setLoadingWarning(true);
 
-        userInfo.twoFactorAuthentication.activated = true;
+        const newUser = await checkIfIdANewUser();
+        console.log(newUser);
 
-        let requestResult = await axios
-            .get(userInfo.getAppInfo_API)
-            .then((response) => {
-                return response.data;
-            });
+        if (newUser) {
+            userInfo.twoFactorAuthentication.activated = true;
 
-        let appInfo = {
-            appName: requestResult.appName,
-            appLogo: requestResult.appLogo.url,
-        };
+            let requestResult = await axios
+                .get(userInfo.getAppInfo_API)
+                .then((response) => {
+                    return response.data;
+                });
 
-        userInfo = { userInfo, ...appInfo };
+            let appInfo = {
+                appName: requestResult.appName,
+                appLogo: requestResult.appLogo.url,
+            };
 
-        console.log(userInfo);
+            userInfo = { userInfo, ...appInfo };
 
-        saveNewUser();
+            saveNewUser();
+        } else {
+            const oldDocRef = await getExistingUserInfo();
+
+            userInfo.twoFactorAuthentication.activated = true;
+
+            let requestResult = await axios
+                .get(userInfo.getAppInfo_API)
+                .then((response) => {
+                    return response.data;
+                });
+
+            let appInfo = {
+                appName: requestResult.appName,
+                appLogo: requestResult.appLogo.url,
+            };
+
+            userInfo = { userInfo, ...appInfo };
+
+            updateUser(oldDocRef);
+        }
     };
 
     const saveNewUser = async () => {
@@ -92,9 +168,32 @@ export default function NotificationEnrollApp({
             );
 
             console.log(docRef.id);
+
+            await updateDoc(doc(db, "users", userID, userID, docRef.id), {
+                idDoc: docRef.id,
+            });
+
             setLoadingWarning(false);
             navigation.navigate(NEXT_PAGE);
             showToastMessage();
+        } catch (error) {
+            console.log(error);
+            navigation.navigate(NEXT_PAGE);
+            showToastErorMessage();
+        }
+    };
+
+    const updateUser = async (oldDocRef) => {
+        try {
+            const userID = await SecureStore.getItemAsync(USER_ID);
+            console.log(userID);
+            const docRef = await updateDoc(
+                doc(db, "users", userID, userID, oldDocRef),
+                userInfo
+            );
+            setLoadingWarning(false);
+            navigation.navigate(NEXT_PAGE);
+            showUpdateSuccessToastMessage();
         } catch (error) {
             console.log(error);
             navigation.navigate(NEXT_PAGE);
